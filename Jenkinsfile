@@ -2,7 +2,7 @@ pipeline {
     agent {label 'agent_win'}
     triggers {
         upstream(
-            upstreamProjects: "lavagna",
+            upstreamProjects: "lavagna/dev3",
             threshold: hudson.model.Result.SUCCESS
         )
     }
