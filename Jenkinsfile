@@ -17,7 +17,7 @@ options { disableConcurrentBuilds() }
             jdk: 'bellsoft-jdk11.0.17',
             maven: 'apache-maven-3.5.0-win'){
                 
-                bat "mvn package"
+                bat "mvn compile"
 
                 zip zipFile: "${BUILD_DISPLAY_NAME}_win${BUILD_NUMBER}.zip",
                 glob : "${WORKSPACE}\\target\\*.jar"
