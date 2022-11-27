@@ -1,5 +1,11 @@
 pipeline {
     agent {label 'agent_win'}
+    triggers {
+        upstream(
+            upstreamProjects: "lavagna",
+            threshold: hudson.model.Result.SUCCESS
+        )
+    }
 
 options { disableConcurrentBuilds() }
     stages {
@@ -9,16 +15,16 @@ options { disableConcurrentBuilds() }
 
             withMaven(
             jdk: 'openlogic-openjdk-8u352-b08-windows',
-            maven: 'apache-maven-3.5.0-win')  {
+            maven: 'apache-maven-3.5.0-win'){
+                
+                bat "mvn package"
 
-                mvn 'clean install'
+                zip zipFile: "${BUILD_DISPLAY_NAME}_win${BUILD_NUMBER}.zip",
+                glob : "${WORKSPACE}\\target\\*.jar"
 
-                zip zipFile: "win_${JOB_NAME}:v${BUILD_NUMBER}.zip",
-                glob : "${WORKSPACE}\\target\\*.jar",
-
-                stash includes: "win_${JOB_NAME}:v${BUILD_NUMBER}.zip",
-                name: "${JOB_NAME}"
-            }
+                stash includes: "${BUILD_DISPLAY_NAME}_win${BUILD_NUMBER}.zip",
+                name: "${BUILD_NUMBER}"
+                }
             }
         post {
         always {
@@ -26,21 +32,19 @@ options { disableConcurrentBuilds() }
         }
         }
         }
-        stage ('Build on Linux') {
+       stage ('Build on Linux') {
             agent {label 'agent_lin'}
             steps {
-
             withMaven(
             jdk: 'java/jdk-8u202-linux',
             maven: 'apache-maven-3.5.0-lin')
 {
-                mvn 'clean install'
-                sh "ls -la ${WORKSPACE}/target/"
 
-                zip zipFile: "${WORKSPACE}/build/lin_${JOB_NAME}:v${BUILD_NUMBER}.zip",
-                glob : "${WORKSPACE}/target/*.jar",
+                sh 'mvn package'
+
+                zip zipFile: "${WORKSPACE}/build/${BUILD_DISPLAY_NAME}_lin${BUILD_NUMBER}.zip",
+                glob : "${WORKSPACE}/target/*.jar"
 }
-
             }
         }
         stage ('Deploy artifact') {
@@ -52,16 +56,16 @@ options { disableConcurrentBuilds() }
             steps {
 
             dir("${WORKSPACE}/build/") {
-            unstash "${JOB_NAME}"
+            unstash "${BUILD_NUMBER}"
             }
 
-            withCredentials([[
+             withCredentials([string(
             credentialsId: 'artifactory-access-token',
             variable: 'ARTIFACTORY_ACCESS_TOKEN'
-           ]]){
-            set +x
-            sh "jf rt upload --url http://192.168.31.13:8082/artifactory --access-token $ARTIFACTORY_ACCESS_TOKEN ${WORKSPACE}/build/lin_${JOB_NAME}_v${BUILD_NUMBER}.zip SNAPSHOTS/"
-            sh "jf rt upload --url http://192.168.31.13:8082/artifactory --access-token $ARTIFACTORY_ACCESS_TOKEN ${WORKSPACE}/build/win_${JOB_NAME}:v${BUILD_NUMBER}.zip.zip  SNAPSHOTS/"
+           )]){
+            sh "jf rt upload --url http://192.168.31.13:8082/artifactory --access-token ${ARTIFACTORY_ACCESS_TOKEN} ${WORKSPACE}/build/${BUILD_DISPLAY_NAME}_lin${BUILD_NUMBER}.zip SNAPSHOTS/"
+            sh "jf rt upload --url http://192.168.31.13:8082/artifactory --access-token ${ARTIFACTORY_ACCESS_TOKEN} ${WORKSPACE}/build/${BUILD_DISPLAY_NAME}_win${BUILD_NUMBER}.zip SNAPSHOTS/"
+            
             }
             }
         post {
@@ -70,6 +74,5 @@ options { disableConcurrentBuilds() }
         }
         }
         }
-
     }
 }
