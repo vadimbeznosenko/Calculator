@@ -14,7 +14,7 @@ options { disableConcurrentBuilds() }
             steps {
 
             withMaven(
-            jdk: 'openlogic-openjdk-8u352-b08-windows',
+            jdk: 'bellsoft-jdk11.0.17',
             maven: 'apache-maven-3.5.0-win'){
                 
                 bat "mvn package"
