@@ -11,7 +11,7 @@ options { disableConcurrentBuilds() }
             maven: 'apache-maven-3.5.0-lin')
 {
             configFileProvider([configFile(fileId: '74cbfc27-4f65-4b19-bb16-f2eb44d36b2c',
-            targetLocation: 'C:/jenkins/workspace/test_maven_dev/settings',
+            targetLocation: "${WORKSPACE}/settings",
             variable: 'MAVEN_SETTINGS')])  {
 
                 sh 'mvn -s $MAVEN_SETTINGS deploy'
