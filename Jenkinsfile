@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'agent_win'}
+    agent none
     triggers {
         upstream(
             upstreamProjects: "lavagna/dev3",
