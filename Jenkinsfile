@@ -17,7 +17,7 @@ options { disableConcurrentBuilds() }
             jdk: 'openlogic-openjdk-8u352-b08-windows',
             maven: 'apache-maven-3.5.0-win'){
                 
-                bat "mvn compile"
+                bat "mvn package"
 
                 zip zipFile: "${JOB_NAME}_win${BUILD_NUMBER}.zip",
                 glob : "${WORKSPACE}\\target\\*.jar"
