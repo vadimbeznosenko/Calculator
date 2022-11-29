@@ -10,7 +10,6 @@ options { disableConcurrentBuilds() }
             withMaven(
             jdk: 'openlogic-openjdk-8u352-b08-windows',
             maven: 'apache-maven-3.5.0-win'){
-            bat "mvn package"
             configFileProvider([configFile(fileId: '74cbfc27-4f65-4b19-bb16-f2eb44d36b2c',
             targetLocation: 'C:/jenkins/workspace/test_maven_dev/settings',
             variable: 'MAVEN_SETTINGS')])  {
