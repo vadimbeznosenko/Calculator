@@ -14,7 +14,7 @@ options { disableConcurrentBuilds() }
             configFileProvider([configFile(fileId: '74cbfc27-4f65-4b19-bb16-f2eb44d36b2c',
             targetLocation: 'C:/jenkins/workspace/test_maven_dev/settings',
             variable: 'MAVEN_SETTINGS')])  {
-                
+                bat "mvn clean"
                 bat "mvn -s $MAVEN_SETTINGS deploy"
 
                 }
