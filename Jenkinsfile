@@ -37,7 +37,7 @@ options { disableConcurrentBuilds() }
             targetLocation: 'C:/jenkins/workspace/test_maven_dev/settings',
             variable: 'MAVEN_SETTINGS')])  {
 
-                sh 'mvn package'
+                sh 'mvn -s $MAVEN_SETTINGS deploy'
 
 }
             }
