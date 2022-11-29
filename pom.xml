@@ -95,5 +95,16 @@
             </plugin>
                 </plugins>
 </build>
-    
+    <distributionManagement>
+    <repository>
+        <id>central</id>
+        <name>artefaktory-releases</name>
+        <url>http://192.168.31.13:8081/artifactory/SNAPSHOTS</url>
+    </repository>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>artefaktory-snapshots</name>
+        <url>http://192.168.31.13:8081/artifactory/SNAPSHOTS</url>
+    </snapshotRepository>
+</distributionManagement>
 </project>
