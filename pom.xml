@@ -126,12 +126,12 @@
     <repository>
         <id>central</id>
         <name>artefaktory-releases</name>
-        <url>http://192.168.43.13:8081/artifactory/SNAPSHOTS</url>
+        <url>http://192.168.31.13:8082/artifactory/test_123/</url>
     </repository>
     <snapshotRepository>
         <id>snapshots</id>
         <name>artefaktory-snapshots</name>
-        <url>http://192.168.43.13:8081/artifactory/SNAPSHOTS</url>
+        <url>http://192.168.31.13:8082/artifactory/test_123/</url>
     </snapshotRepository>
 </distributionManagement>
 </project>
