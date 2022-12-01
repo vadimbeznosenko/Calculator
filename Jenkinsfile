@@ -15,7 +15,7 @@ options { disableConcurrentBuilds() }
             variable: 'MAVEN_SETTINGS')])  {
 
                 sh 'mvn clean'
-                sh 'mvn -s $MAVEN_SETTINGS deploy'
+                sh "mvn -s $MAVEN_SETTINGS deploy"
 
 }
             }
