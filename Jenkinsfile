@@ -14,7 +14,7 @@ options { disableConcurrentBuilds() }
             targetLocation: "${WORKSPACE}/settings",
             variable: 'MAVEN_SETTINGS')])  {
 
-                sh 'mvn -s $MAVEN_SETTINGS deploy'
+                sh 'mvn -s $MAVEN_SETTINGS package'
 
 }
             }
