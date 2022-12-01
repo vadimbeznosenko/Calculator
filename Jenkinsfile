@@ -1,26 +1,29 @@
 pipeline {
-    agent any
+    agent none
 
-    options { disableConcurrentBuilds() }
+options { disableConcurrentBuilds() }
     stages {
-        stage('Build on Linux') {
+       stage ('Build on Linux') {
+            agent {label 'agent_lin'}
             steps {
-                withMaven(
+            withMaven(
             jdk: 'Java_8',
             maven: 'apache-maven-3.5.0-lin')
 {
-                    configFileProvider([configFile(fileId: '74cbfc27-4f65-4b19-bb16-f2eb44d36b2c',
+            configFileProvider([configFile(fileId: '74cbfc27-4f65-4b19-bb16-f2eb44d36b2c',
             targetLocation: "${WORKSPACE}/settings",
             variable: 'MAVEN_SETTINGS')])  {
-                        sh 'mvn -s $MAVEN_SETTINGS deploy'
-            }
+
+                sh 'mvn -s $MAVEN_SETTINGS deploy'
+
 }
             }
-                post {
-                always {
-                    cleanWs()
-                }
-                }
         }
+                post {
+        always {
+            cleanWs()
+        }
+        }
+       }
     }
 }
