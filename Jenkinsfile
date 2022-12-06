@@ -12,20 +12,23 @@ options { disableConcurrentBuilds() }
         stage ('Build on Windows'){
             agent {label 'agent_win'}
             steps {
+                script{
+                    
+            withMaven( 
+            jdk: 'openlogic-openjdk-8u352-b08-windows', 
+            maven: 'apache-maven-3.5.0-win') {
 
-            withMaven(
-            jdk: 'openlogic-openjdk-8u352-b08-windows',
-            maven: 'apache-maven-3.5.0-win'){
-                
-                bat "mvn package"
+            mvn 'clean install'
 
-                zip zipFile: "${JOB_NAME}_win${BUILD_NUMBER}.zip",
-                glob : "${WORKSPACE}\\target\\*.jar"
+            zip zipFile: "${JOB_NAME}_win${BUILD_NUMBER}.zip",
+            glob : "${WORKSPACE}\\target\\*.jar"
 
-                stash includes: "${JOB_NAME}_win${BUILD_NUMBER}.zip",
-                name: "${BUILD_NUMBER}"
-                }
+            stash includes: "${JOB_NAME}_win${BUILD_NUMBER}.zip",
+            name: "${BUILD_NUMBER}"
             }
+     }
+  }
+
         post {
         always {
             cleanWs()
